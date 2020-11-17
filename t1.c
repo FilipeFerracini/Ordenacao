@@ -33,18 +33,9 @@ void aloca_vetor_decresc(int *vec, int size){
 
 void randomize ( int *vec, int n ) 
 { 
-    // Use a different seed value so that we don't get same 
-    // result each time we run this program 
     srand ( time(NULL) ); 
-  
-    // Start from the last element and swap one by one. We don't 
-    // need to run for the first element that's why i > 0 
-    for (int i = n-1; i > 0; i--) 
-    { 
-        // Pick a random index from 0 to i 
+    for (int i = n-1; i > 0; i--){ 
         int j = rand() % (i+1); 
-  
-        // Swap arr[i] with the element at random index 
         troca((vec+i), (vec+j)); 
     }
 } 
@@ -149,16 +140,16 @@ void quicksort(int *v,int comeco, int fim){
     }
 }
 
+
+
 int main (void){
     int casos[7]={10,10000,100000,200000,300000,400000,500000};
-    double tabela[7][5]={0};
+    double time_cresc[7][5]={0}, time_dec[7][5]={0}, time_aleat[7][5]={0};
     
     for(int i=0;i<7;i++){
         printf("%d\n",*(casos+i));
         int *vec,*aux;
-        double time[5]={0};
         clock_t t=0;
-        
         vec=(int *)malloc(sizeof(int) * (*(casos+i)));
         aux=(int *)malloc(sizeof(int) * (*(casos+i)));
 
@@ -169,10 +160,38 @@ int main (void){
         t=clock();
         bubble(aux,*(casos+i));
         t=clock()-t;
-        time[0]=((double)t)/CLOCKS_PER_SEC;
-        
+        time_cresc[i][0]=((double)t)/CLOCKS_PER_SEC;
         printVec(aux,*(casos+i));
-        printf("%f\n", time[0]);
+        
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        insertion(aux,*(casos+i));
+        t=clock()-t;
+        time_cresc[i][1]=((double)t)/CLOCKS_PER_SEC;
+        printVec(aux,*(casos+i));
+        
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        selection(aux,*(casos+i));
+        t=clock()-t;
+        time_cresc[i][2]=((double)t)/CLOCKS_PER_SEC;
+        printVec(aux,*(casos+i));
+        /*
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        mergesort(aux,0,*(casos+i));
+        t=clock()-t;
+        time_cresc[i][3]=((double)t)/CLOCKS_PER_SEC;
+        printVec(aux,*(casos+i));
+        */
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        quicksort(aux,0,*(casos+i)-1);
+        t=clock()-t;
+        time_cresc[i][4]=((double)t)/CLOCKS_PER_SEC;
+        printVec(aux,*(casos+i));
+        
+        printf("%f %f %f %f %f \n", time_cresc[i][0], time_cresc[i][1], time_cresc[i][2], time_cresc[i][3], time_cresc[i][4]);
 
         printf("=================================================\n");
         
