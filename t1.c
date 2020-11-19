@@ -120,7 +120,6 @@ void mergesort( int *v, int comeco,int fim){
 int separa(int *v, int comeco, int fim){
     int pivo=v[fim];
     int j=comeco,k;
-    /*v[c:j-1]<=p<v[j;k]*/
     for(k=comeco;k<fim;k++){
         if(v[k]<=pivo){
             troca(&v[k],&v[j]);
@@ -140,10 +139,17 @@ void quicksort(int *v,int comeco, int fim){
     }
 }
 
-
+void print_tabela(double *matrix){
+    for(int i=0;i<7;i++){
+        for(int j=0;j<5;j++){
+            printf("%fs\t", *((matrix+i*5) + j));
+        }
+        printf("\n");
+    }
+}
 
 int main (void){
-    int casos[7]={10,10000,100000,200000,300000,400000,500000};
+    int casos[7]={1000,10000,100000,200000,300000,400000,500000};
     double time_cresc[7][5]={0}, time_dec[7][5]={0}, time_aleat[7][5]={0};
     
     for(int i=0;i<7;i++){
@@ -155,64 +161,124 @@ int main (void){
 
         aloca_vetor_cresc(vec,*(casos+i));
         copy_vec(vec,aux,*(casos+i));
-        printVec(aux,*(casos+i));
         
         t=clock();
         bubble(aux,*(casos+i));
         t=clock()-t;
         time_cresc[i][0]=((double)t)/CLOCKS_PER_SEC;
-        printVec(aux,*(casos+i));
         
         copy_vec(vec,aux,*(casos+i));
         t=clock();
         insertion(aux,*(casos+i));
         t=clock()-t;
         time_cresc[i][1]=((double)t)/CLOCKS_PER_SEC;
-        printVec(aux,*(casos+i));
         
         copy_vec(vec,aux,*(casos+i));
         t=clock();
         selection(aux,*(casos+i));
         t=clock()-t;
         time_cresc[i][2]=((double)t)/CLOCKS_PER_SEC;
-        printVec(aux,*(casos+i));
-        /*
+        
         copy_vec(vec,aux,*(casos+i));
         t=clock();
         mergesort(aux,0,*(casos+i));
         t=clock()-t;
         time_cresc[i][3]=((double)t)/CLOCKS_PER_SEC;
-        printVec(aux,*(casos+i));
-        */
+        
         copy_vec(vec,aux,*(casos+i));
         t=clock();
         quicksort(aux,0,*(casos+i)-1);
         t=clock()-t;
         time_cresc[i][4]=((double)t)/CLOCKS_PER_SEC;
-        printVec(aux,*(casos+i));
         
-        printf("%f %f %f %f %f \n", time_cresc[i][0], time_cresc[i][1], time_cresc[i][2], time_cresc[i][3], time_cresc[i][4]);
+        printf("%fs %fs %fs %fs %fs \n", time_cresc[i][0], time_cresc[i][1], time_cresc[i][2], time_cresc[i][3], time_cresc[i][4]);
 
-        printf("=================================================\n");
+        ///printf("=================================================\n");
         
         aloca_vetor_decresc(vec,*(casos+i));
         copy_vec(vec,aux,*(casos+i));
-        printVec(aux,*(casos+i));
+
+        t=clock();
         bubble(aux,*(casos+i));
-        printVec(aux,*(casos+i));
+        t=clock()-t;
+        time_dec[i][0]=((double)t)/CLOCKS_PER_SEC;
         
-        printf("=================================================\n");
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        insertion(aux,*(casos+i));
+        t=clock()-t;
+        time_dec[i][1]=((double)t)/CLOCKS_PER_SEC;
+        
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        selection(aux,*(casos+i));
+        t=clock()-t;
+        time_dec[i][2]=((double)t)/CLOCKS_PER_SEC;
+        
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        mergesort(aux,0,*(casos+i));
+        t=clock()-t;
+        time_dec[i][3]=((double)t)/CLOCKS_PER_SEC;
+        
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        quicksort(aux,0,*(casos+i)-1);
+        t=clock()-t;
+        time_dec[i][4]=((double)t)/CLOCKS_PER_SEC;
+        
+        printf("%fs %fs %fs %fs %fs \n", time_dec[i][0], time_dec[i][1], time_dec[i][2], time_dec[i][3], time_dec[i][4]);
+
+        ///printf("=================================================\n");
         
         randomize(vec,*(casos+i));
         copy_vec(vec,aux,*(casos+i));
-        printVec(aux,*(casos+i));
+
+        t=clock();
         bubble(aux,*(casos+i));
-        printVec(aux,*(casos+i));
+        t=clock()-t;
+        time_aleat[i][0]=((double)t)/CLOCKS_PER_SEC;
         
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        insertion(aux,*(casos+i));
+        t=clock()-t;
+        time_aleat[i][1]=((double)t)/CLOCKS_PER_SEC;
+        
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        selection(aux,*(casos+i));
+        t=clock()-t;
+        time_aleat[i][2]=((double)t)/CLOCKS_PER_SEC;
+        
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        mergesort(aux,0,*(casos+i));
+        t=clock()-t;
+        time_aleat[i][3]=((double)t)/CLOCKS_PER_SEC;
+        
+        copy_vec(vec,aux,*(casos+i));
+        t=clock();
+        quicksort(aux,0,*(casos+i)-1);
+        t=clock()-t;
+        time_aleat[i][4]=((double)t)/CLOCKS_PER_SEC;
+        
+        printf("%fs %fs %fs %fs %fs \n", time_aleat[i][0], time_aleat[i][1], time_aleat[i][2], time_aleat[i][3], time_aleat[i][4]);
+        printf("=================================================\n");
+    
         free(vec);
         free(aux);
         break;
     }
+    /*for(int i=0;i<7;i++){
+        for(int j=0;j<5;j++){
+            printf("%fs\t", time_cresc[i][j]);
+        }
+        printf("\n");
+    }*/
+    print_tabela(time_cresc);
+    /*print_tabela(time_dec);
+    print_tabela(time_aleat);*/
     
     return 0;
 }
