@@ -9,8 +9,8 @@ void troca(int *a, int *b){
     *a=*b;
     *b=aux;
 }
-void printVec (int *vec, int n) 
-{ 
+
+void printVec (int *vec, int n){ 
     for (int i = 0; i < n; i++) 
         printf("%d ", *(vec+i)); 
     printf("\n"); 
@@ -268,15 +268,9 @@ int main (void){
     
         free(vec);
         free(aux);
-        break;
+        ///break;
     }
-    /*for(int i=0;i<7;i++){
-        for(int j=0;j<5;j++){
-            printf("%fs\t", time_cresc[i][j]);
-        }
-        printf("\n");
-    }*/
-    print_tabela(time_cresc);
+    ///print_tabela(time_cresc);
     /*print_tabela(time_dec);
     print_tabela(time_aleat);*/
     
