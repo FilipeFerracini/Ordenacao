@@ -40,7 +40,6 @@ void randomize ( int *vec, int n )
     }
 } 
 
-
 void bubble(int *v,int n){
     int max;
     for(int i=0;i<n;i++){
@@ -54,11 +53,10 @@ void bubble(int *v,int n){
 
 void insertion (int *v, int n){
     int j,x;
-    for(int i=1;i<n;i++){ /*Tudo para trás do i já está ordenado. Por isso começa em i=1*/
-        x=v[i]; /*auxiliar recebe o próximo valor*/
-        for(j=i-1;j>=0 && v[j]>x;j--){ /*Verifica os valores antes da posição i. Ou seja, procura onde inserir o valor de x*/
+    for(int i=1;i<n;i++){
+        x=v[i];
+        for(j=i-1;j>=0 && v[j]>x;j--)
             v[j+1]=v[j];
-        }
         v[j+1]=x;
     }
 }
@@ -91,7 +89,6 @@ void intercala(int *v, int comeco, int meio, int fim){
         }
         k++;
     }
-    /*Jogar para dentro de W o que sobrou*/
     while(i<meio){
         w[k]=v[i];
         i++;
@@ -102,9 +99,8 @@ void intercala(int *v, int comeco, int meio, int fim){
         j++;
         k++;
     }
-    for(i=comeco;i<fim;i++){ /*Copia w de volta para v*/
+    for(i=comeco;i<fim;i++)
         v[i]=w[i-comeco];
-    }
 }
 
 void mergesort( int *v, int comeco,int fim){
@@ -139,13 +135,21 @@ void quicksort(int *v,int comeco, int fim){
     }
 }
 
-void print_tabela(double *matrix){
+void print_tabela(int *casos, double matrix[7][5]){
+    printf("|       |    BUBBLE   |  INSERTION  |  SELECTION  |    MERGE    |    QUICK    |\n");
     for(int i=0;i<7;i++){
+        printf("|%d\t",*(casos+i));
         for(int j=0;j<5;j++){
-            printf("%fs\t", *((matrix+i*5) + j));
+            if(matrix[i][j]<10)
+                printf("|   %0.6fs ", (matrix[i][j]));
+            else if(matrix[i][j]<100)
+                printf("|  %0.6fs ", (matrix[i][j]));
+            else
+                printf("| %0.6fs ", (matrix[i][j]));
         }
-        printf("\n");
+        printf("|\n");
     }
+    printf("===============================================================================\n");
 }
 
 int main (void){
@@ -153,7 +157,6 @@ int main (void){
     double time_cresc[7][5]={0}, time_dec[7][5]={0}, time_aleat[7][5]={0};
     
     for(int i=0;i<7;i++){
-        printf("%d\n",*(casos+i));
         int *vec,*aux;
         clock_t t=0;
         vec=(int *)malloc(sizeof(int) * (*(casos+i)));
@@ -190,11 +193,7 @@ int main (void){
         quicksort(aux,0,*(casos+i)-1);
         t=clock()-t;
         time_cresc[i][4]=((double)t)/CLOCKS_PER_SEC;
-        
-        printf("%fs %fs %fs %fs %fs \n", time_cresc[i][0], time_cresc[i][1], time_cresc[i][2], time_cresc[i][3], time_cresc[i][4]);
 
-        ///printf("=================================================\n");
-        
         aloca_vetor_decresc(vec,*(casos+i));
         copy_vec(vec,aux,*(casos+i));
 
@@ -226,11 +225,7 @@ int main (void){
         quicksort(aux,0,*(casos+i)-1);
         t=clock()-t;
         time_dec[i][4]=((double)t)/CLOCKS_PER_SEC;
-        
-        printf("%fs %fs %fs %fs %fs \n", time_dec[i][0], time_dec[i][1], time_dec[i][2], time_dec[i][3], time_dec[i][4]);
-
-        ///printf("=================================================\n");
-        
+       
         randomize(vec,*(casos+i));
         copy_vec(vec,aux,*(casos+i));
 
@@ -263,22 +258,18 @@ int main (void){
         t=clock()-t;
         time_aleat[i][4]=((double)t)/CLOCKS_PER_SEC;
         
-        printf("%fs %fs %fs %fs %fs \n", time_aleat[i][0], time_aleat[i][1], time_aleat[i][2], time_aleat[i][3], time_aleat[i][4]);
-        printf("=================================================\n");
-    
         free(vec);
         free(aux);
-        break;
+        ///break;
     }
-    /*for(int i=0;i<7;i++){
-        for(int j=0;j<5;j++){
-            printf("%fs\t", time_cresc[i][j]);
-        }
-        printf("\n");
-    }*/
-    print_tabela(time_cresc);
-    /*print_tabela(time_dec);
-    print_tabela(time_aleat);*/
+    printf("==============================VETOR CRESCENTE==================================\n");
+    print_tabela(casos, time_cresc);
+    printf("\n");
+    printf("==============================VETOR DECRESCENTE================================\n");
+    print_tabela(casos, time_dec);
+    printf("\n");
+    printf("==============================VETOR ALEATORIO==================================\n");
+    print_tabela(casos, time_aleat);
     
     return 0;
 }
